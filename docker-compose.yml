@@ -26,19 +26,19 @@ services:
         # networks: 
         # - my_network
 
-        # app:
-        #   image: app
-        #   build: ./app
-        # links:
-        # - db
-        #  ports:
-        # - "5000:5000"
-        #  environment:
-        #  MYSQL_ROOT_PASSWORD: root
-        #  tty: true
-        # stdin_open: true
-        # networks: 
-        # - my_network
+  app:
+    image: app
+    build: ./app
+    links:
+      - db
+    ports:
+      - "5000:5000"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    tty: true
+    stdin_open: true
+    networks: 
+      - my_network
 
   db:
     image: mysql:5.7
