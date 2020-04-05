@@ -268,7 +268,7 @@ def buy():
         cancel_reservation(reservation.ID)
         purchase = buy_ticket(reservation.ID_movie)
         if purchase != 1:
-            return {"status" : "Could not buy ticket for flight: " + reservation.ID_movie}
+            return {"status" : "Could not buy ticket for movie: " + reservation.ID_movie}
         else:
             response = response + " " + reservation.ID_movie
 
