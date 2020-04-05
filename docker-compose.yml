@@ -14,6 +14,20 @@ services:
     networks: 
       - my_network
 
+  service:
+    image: service
+    build: ./service
+    links:
+      - db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "5002:5002"
+    tty: true
+    stdin_open: true
+    networks:
+      - my_network
+
   db:
     image: mysql:5.7
     ports:
@@ -23,6 +37,18 @@ services:
     volumes:
       - ./db:/docker-entrypoint-initdb.d/:ro
     networks: 
+      - my_network
+ 
+  client:
+    image: client
+    build: ./client
+    depends_on:
+      - service
+    ports:
+      - "5001:5001"
+    tty: true
+    stdin_open: true
+    networks:
       - my_network
 
 networks: 

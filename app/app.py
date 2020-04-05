@@ -44,7 +44,6 @@ def add_Movie(name, time, day, month, duration, seats, ID):
 
     cursor.execute(add_movie, movie_data)
     connection.commit()
-
     connection.close()
     cursor.close()
 
