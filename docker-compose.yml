@@ -1,8 +1,7 @@
 version: "2"
 services:
   app:
-    image: app
-    build: ./app
+    image: biancatazlauanu/cinema-app:latest-app
     links:
       - db
     ports:
@@ -15,8 +14,7 @@ services:
       - my_network
 
   service:
-    image: service
-    build: ./service
+    image: biancatazlauanu/cinema-app:latest-service
     links:
       - db
     environment:
@@ -40,7 +38,7 @@ services:
       - my_network
  
   client:
-    image: client
+    image: biancatazlauanu/cinema-app:latest-client
     build: ./client
     depends_on:
       - service
@@ -48,6 +46,19 @@ services:
       - "5001:5001"
     tty: true
     stdin_open: true
+    networks:
+      - my_network
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    depends_on:
+      - db
+    ports:
+      - "3000:3000"
+    user: '0'
+    volumes:
+      - /srv/docker/grafana/data:/var/lib/grafana
     networks:
       - my_network
 

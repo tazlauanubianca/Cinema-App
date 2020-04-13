@@ -26,7 +26,7 @@ def get_Movies():
 
     return results
 
-def add_Movie(name, time, day, month, duration, seats, ID):
+def add_Movie(name, time, day, month, duration, seats, ID, room):
     config = {
         'user': 'root',
         'password': 'root',
@@ -37,10 +37,10 @@ def add_Movie(name, time, day, month, duration, seats, ID):
     connection = mysql.connector.connect(**config)
     cursor = connection.cursor()
 
-    add_movie = ("INSERT INTO movies (ID, name_movie, time, day, "
+    add_movie = ("INSERT INTO movies (ID, name_movie, time, room, day, "
                  "month, duration, seats, reservations, tickets_sold) "
-                 "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)")
-    movie_data = (ID, name, time, day, month, duration, seats, '0', '0')
+                 "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)")
+    movie_data = (ID, name, time, room, day, month, duration, seats, '0', '0')
 
     cursor.execute(add_movie, movie_data)
     connection.commit()
@@ -92,10 +92,11 @@ if __name__ == '__main__':
             time = input("Time of display: ")
             day = input("Day of the month: ")
             month = input("Month: ")
+            room = input("Room: ")
             duration = input("Duration of the movie: ")
             seats = input("Number of seats available: ")
 
-            add_Movie(name, time, day, month, duration, seats, ID)
+            add_Movie(name, time, day, month, duration, seats, ID, room)
             print("Movie added!")
 
         if '2' == command:
