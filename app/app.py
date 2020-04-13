@@ -16,9 +16,9 @@ def get_Movies():
     cursor = connection.cursor()
 
     cursor.execute('SELECT * FROM movies')
-    results = [[ID, name_movie, time, day, month, \
+    results = [[ID, name_movie, time, room, day, month, \
                 duration, seats, reservations, tickets_sold] \
-                for (ID, name_movie, time, day, month, \
+                for (ID, name_movie, time, room, day, month, \
                 duration, seats, reservations, tickets_sold) in cursor]
 
     cursor.close()
