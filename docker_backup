@@ -1,8 +1,7 @@
 version: "2"
 services:
   app:
-    image: app
-    build: ./app
+    image: biancatazlauanu/cinema-app:latest-app
     links:
       - db
     ports:
@@ -15,8 +14,7 @@ services:
       - my_network
 
   service:
-    image: service
-    build: ./service
+    image: biancatazlauanu/cinema-app:latest-service
     links:
       - db
     environment:
@@ -27,6 +25,7 @@ services:
     stdin_open: true
     networks:
       - my_network
+
   db:
     image: mysql:5.7
     ports:
@@ -37,9 +36,9 @@ services:
       - ./db:/docker-entrypoint-initdb.d/:ro
     networks: 
       - my_network
-
+ 
   client:
-    image: client
+    image: biancatazlauanu/cinema-app:latest-client
     build: ./client
     depends_on:
       - service
@@ -66,3 +65,4 @@ services:
 networks: 
   my_network:
     driver : bridge
+   
