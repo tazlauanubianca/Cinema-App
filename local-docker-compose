@@ -1,7 +1,8 @@
-version: "3.3"
+version: "2"
 services:
   app:
-    image: biancatazlauanu/cinema-app:latest-app
+    image: app
+    build: ./app
     links:
       - db
     ports:
@@ -10,9 +11,12 @@ services:
       MYSQL_ROOT_PASSWORD: root
     tty: true
     stdin_open: true
+    networks: 
+      - my_network
 
   service:
-    image: biancatazlauanu/cinema-app:latest-service
+    image: service
+    build: ./service
     links:
       - db
     environment:
@@ -21,7 +25,8 @@ services:
       - "5002:5002"
     tty: true
     stdin_open: true
-  
+    networks:
+      - my_network
   db:
     image: mysql:5.7
     ports:
@@ -30,15 +35,20 @@ services:
       MYSQL_ROOT_PASSWORD: root
     volumes:
       - ./db:/docker-entrypoint-initdb.d/:ro
+    networks: 
+      - my_network
 
   client:
-    image: biancatazlauanu/cinema-app:latest-client
+    image: client
+    build: ./client
     depends_on:
       - service
     ports:
       - "5001:5001"
     tty: true
     stdin_open: true
+    networks:
+      - my_network
 
   grafana:
     image: grafana/grafana:latest
@@ -50,3 +60,9 @@ services:
     user: '0'
     volumes:
       - /srv/docker/grafana/data:/var/lib/grafana
+    networks:
+      - my_network
+
+networks: 
+  my_network:
+    driver : bridge
