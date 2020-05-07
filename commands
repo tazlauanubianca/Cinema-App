@@ -1,0 +1,36 @@
+# Create instance
+sudo docker-machine create --driver amazonec2 --amazonec2-region eu-west-2 \
+--amazonec2-open-port 3306 --amazonec2-open-port 5002 --amazonec2-open-port 5000 \
+--amazonec2-open-port 5001 --amazonec2-open-port 3000 --amazonec2-open-port 2376 \
+--amazonec2-open-port 4789 --amazonec2-open-port 7946 --amazonec2-open-port 2377 \
+--amazonec2-access-key <ACCESS-KEY> \
+--amazonec2-secret-key <SECRET-KEY> manager
+
+# Set machine as manager + init swarm
+sudo docker-machine ssh manager "sudo docker swarm init --advertise-addr <IP>"
+
+# Add second machine to swarm as worker
+sudo docker-machine ssh myaws "sudo docker swarm join --token <TOKEN> <IP>:<PORT>"
+
+# Copy docker-compose.yml to machine 
+sudo docker-machine scp docker-compose.yml manager:.
+
+# Start services
+sudo docker stack deploy -c docker-compose.yml testapp
+
+# Show ps
+sudo docker-machine ssh myaws2 "sudo docker stack ps testapp"
+
+# Stop services
+sudo docker stack rm testapp
+
+# Display all nodes
+sudo docker node ls
+
+# Remove node
+worker:
+docker swarm leave
+docker node rm node-2
+
+manager:
+docker swarm leave --force

@@ -29,6 +29,7 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: root
     volumes:
+      - db_data:/var/lib/mysql
       - ./db:/docker-entrypoint-initdb.d/:ro
 
   client:
@@ -49,4 +50,8 @@ services:
       - "3000:3000"
     user: '0'
     volumes:
-      - /srv/docker/grafana/data:/var/lib/grafana
+      - grafana_data:/var/lib/grafana
+
+volumes:
+    db_data: {}
+    grafana_data: {}
